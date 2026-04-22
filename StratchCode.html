@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NateR Studios</title>
+    <link href="/css/scratch.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <!-- LOGO (TOP LEFT) -->
+        <a href="StratchCode.html" class="logo">
+            <img src="assets/img/studios_logo.png" alt="NateR Logo">
+        </a>
+
+        <!-- NAV LINKS (TOP RIGHT) -->
+        <nav>
+            <a href="#video">Learn</a>
+            <a href="#game">Simulation</a>
+            <a href="#graph">Launch Data</a>
+        </nav>
+    </header>
+
+    <!-- PAGE SECTIONS -->
+    <a id="top"><img src="assets/img/space_landscape.png"></a>
+    <section id="video">
+    <h1>Featured Video</h1>
+
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/HAyfSH-80bw?si=vmZdVoCDn4boB8B2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    </section>
+
+    <section id="game">
+    <h1>Can You Avoid the Asteroids?</h1>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <p>Use WASD or Arrow Keys to move • Avoid asteroids</p>
+    </section>
+
+    <section id="graph">
+    <h1>Launch Data</h1>
+
+    <div class="tableau-container">
+    <iframe 
+        src="https://public.tableau.com/views/Spacemissionlaunches/Dashboard1?:showVizHome=no&:embed=true"
+        style="width:100%; height:600px; border:none;">
+    </iframe>
+    </div>
+    </section>
+    <div class="space-list">
+    <ol>
+        <li>More Content Coming Soon! Including:
+            <ul>
+                <li>Mars</li>
+                <li>Aliens</li>
+                <li>And More Asteroids</li>
+            </ul>
+        </li>
+    </ol>
+    </div>
+    
+    <a href="#top" class="scroll-top-btn">↑</a>
+    <br>
+    <div class="about-creator">
+    <a href="index.html" class="about-btn">About the creator</a>
+    </div>
+
+    <script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = 800;
+canvas.height = 400;
+
+// GAME STATE
+let gameRunning = true;
+let animationId;
+let asteroidInterval;
+
+// CONTROLS
+let keys = {};
+const gameKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "a", "s", "d", " "];
+
+document.addEventListener("keydown", function(e) {
+    if (gameRunning && gameKeys.includes(e.key)) {
+        e.preventDefault(); // stop page scrolling
+    }
+    keys[e.key] = true;
+});
+
+document.addEventListener("keyup", function(e) {
+    if (gameRunning && gameKeys.includes(e.key)) {
+        e.preventDefault();
+    }
+    keys[e.key] = false;
+});
+
+// PLAYER
+let player = {
+    x: 100,
+    y: 200,
+    size: 20,
+    speed: 5
+};
+
+// ASTEROIDS
+let asteroids = [];
+
+function spawnAsteroid() {
+    if (!gameRunning) return;
+
+    asteroids.push({
+        x: canvas.width,
+        y: Math.random() * canvas.height,
+        size: 15 + Math.random() * 20,
+        speed: 3 + Math.random() * 3
+    });
+}
+
+// SCORE
+let score = 0;
+
+// END GAME
+function endGame() {
+    gameRunning = false;
+
+    cancelAnimationFrame(animationId);
+    clearInterval(asteroidInterval);
+
+    showGameOver();
+}
+
+// GAME OVER UI
+function showGameOver() {
+    const overlay = document.createElement("div");
+
+    overlay.style.position = "absolute";
+    overlay.style.top = canvas.offsetTop + "px";
+    overlay.style.left = canvas.offsetLeft + "px";
+    overlay.style.width = canvas.width + "px";
+    overlay.style.height = canvas.height + "px";
+
+    overlay.style.background = "rgba(0,0,0,0.85)";
+    overlay.style.color = "white";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+
+    overlay.innerHTML = `
+        <h2 style="color:#ff3b3b;">Game Over</h2>
+        <p>Score: ${score}</p>
+        <button onclick="restartGame()" style="
+            padding:10px 20px;
+            margin-top:10px;
+            cursor:pointer;
+            background:#111;
+            color:white;
+            border:1px solid #ff3b3b;
+        ">Restart</button>
+    `;
+
+    document.getElementById("game").appendChild(overlay);
+}
+
+// RESTART
+function restartGame() {
+    location.reload();
+}
+
+// UPDATE
+function update() {
+    if (!gameRunning) return;
+
+    // MOVEMENT
+    if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
+    if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
+    if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
+    if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
+
+    // BOUNDS
+    player.x = Math.max(0, Math.min(canvas.width, player.x));
+    player.y = Math.max(0, Math.min(canvas.height, player.y));
+
+    // ASTEROIDS
+    asteroids.forEach(a => a.x -= a.speed);
+    asteroids = asteroids.filter(a => a.x > -50);
+
+    // COLLISION
+    for (let a of asteroids) {
+        let dx = player.x - a.x;
+        let dy = player.y - a.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < player.size + a.size) {
+            endGame();
+            return;
+        }
+    }
+
+    score++;
+}
+
+// DRAW
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // PLAYER
+    ctx.fillStyle = "#4da6ff";
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#4da6ff";
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    // ASTEROIDS
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "#ff3b3b";
+
+    asteroids.forEach(a => {
+        ctx.fillStyle = "#ff3b3b";
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, a.size, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    // SCORE
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText("Score: " + score, 10, 30);
+}
+
+// LOOP
+function gameLoop() {
+    update();
+    draw();
+    animationId = requestAnimationFrame(gameLoop);
+}
+
+// START
+asteroidInterval = setInterval(spawnAsteroid, 1000);
+gameLoop();
+</script>
+</body>
+</html>

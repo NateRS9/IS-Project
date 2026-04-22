@@ -1,0 +1,329 @@
+/* I need at least 4 of these */
+
+/* BACKGROUND */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+
+    background: url("landing-image.png") no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+}
+
+/* OPTIONAL: DARK OVERLAY (improves readability) */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55); /* adjust darkness here */
+    z-index: -1;
+}
+
+
+/* NAVBAR */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 40px;
+
+    /* Transparent dark glass effect */
+    background: rgba(10, 15, 30, 0.65);
+    backdrop-filter: blur(10px);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* LOGO */
+.logo img {
+    height: 50px;
+}
+
+img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* NAV LINKS */
+nav a {
+    margin-left: 30px;
+    text-decoration: none;
+    color: #e0e6ff;
+
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT */
+nav a:hover {
+    color: #ff3b3b;
+
+    text-shadow:
+        0 0 5px rgba(255, 60, 60, 0.7),
+        0 0 10px rgba(255, 60, 60, 0.5);
+}
+
+
+
+/* For Game Below */
+#game {
+    text-align: center;
+    padding: 40px;
+    position: relative;
+}
+
+#gameCanvas {
+    width: 80%;
+    max-width: 800px;
+    height: 400px;
+
+    background: radial-gradient(circle at center, #0b0f2a, #000000);
+
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    box-shadow:
+        0 0 20px rgba(255, 0, 0, 0.2),
+        0 0 40px rgba(0, 100, 255, 0.2);
+
+    margin-top: 20px;
+}
+
+/* Video CSS */
+/* VIDEO SECTION */
+#video {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* VIDEO FRAME CONTAINER */
+.video-container {
+    position: relative;
+    width: 80%;
+    max-width: 900px;
+    margin: 30px auto;
+
+    padding-bottom: 56.25%;
+
+    border: 1px solid rgba(255, 0, 0, 0.2);
+
+    box-shadow:
+        0 0 25px rgba(255, 0, 0, 0.2),
+        0 0 50px rgba(0, 100, 255, 0.2);
+
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* IFRAME FIT */
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Tableau */
+/* GRAPH SECTION */
+
+#tableau {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* OUTER CONTAINER CONTROLS SIZE */
+.tableau-container {
+    position: relative;
+    width: 85%;
+    max-width: 1000px;
+    margin: 30px auto;
+
+    height: 600px;            
+    max-height: 600px;       
+
+    background: rgba(10, 15, 30, 0.55);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 0, 0, 0.2);
+
+    box-shadow:
+        0 0 20px rgba(255, 0, 0, 0.2),
+        0 0 40px rgba(0, 100, 255, 0.2);
+
+    border-radius: 12px;
+    overflow: hidden;
+
+    transition: 0.3s ease;
+}
+
+/* HOVER GLOW */
+.tableau-container:hover {
+    box-shadow:
+        0 0 35px rgba(255, 60, 60, 0.25),
+        0 0 70px rgba(0, 120, 255, 0.25);
+}
+
+/* FORCE FIT INSIDE CONTAINER */
+.tableau-container iframe {
+    width: 100%;
+    height: 100%;     
+    border: none;
+
+    background: transparent;
+
+    display: block;
+}
+
+#graph h1 {
+    text-align: center;
+    margin: 0;
+    padding-top: 20px;
+}
+
+
+/* Go To Top Button */
+.scroll-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;   
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+
+    color: #ffffff;
+
+    background: rgba(10, 15, 30, 0.7);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 15px rgba(255, 0, 0, 0.25),
+        0 0 25px rgba(0, 100, 255, 0.2);
+
+    transition: all 0.3s ease;
+
+    z-index: 9999;
+}
+
+/* hover effect */
+.scroll-top-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    color: #ff3b3b;
+
+    box-shadow:
+        0 0 20px rgba(255, 60, 60, 0.4),
+        0 0 35px rgba(0, 120, 255, 0.3);
+}
+
+/* About Creator Button */
+/* CENTER CONTAINER */
+.about-creator {
+    text-align: center;
+    margin: 40px 0;
+}
+
+/* NEON BUTTON STYLE */
+.about-btn {
+    display: inline-block;
+
+    padding: 12px 20px;
+
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    color: #ffffff;
+
+    background: rgba(10, 15, 30, 0.7);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    border-radius: 30px;
+
+    box-shadow:
+        0 0 15px rgba(255, 0, 0, 0.25),
+        0 0 25px rgba(0, 100, 255, 0.2);
+
+    transition: all 0.3s ease;
+}
+
+/* HOVER */
+.about-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+
+    color: #ff3b3b;
+
+    box-shadow:
+        0 0 20px rgba(255, 60, 60, 0.4),
+        0 0 35px rgba(0, 120, 255, 0.3);
+}
+
+
+/* Bottom List */
+
+.space-list {
+    display: flex;
+    justify-content: center;
+
+    margin: 40px auto;
+}
+
+/* MAIN LIST CONTAINER */
+.space-list ol {
+    padding: 20px 30px;
+
+    background: rgba(10, 15, 30, 0.55);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 20px rgba(255, 0, 0, 0.2),
+        0 0 40px rgba(0, 100, 255, 0.2);
+
+    color: #ffffff;
+
+    font-family: Arial, sans-serif;
+}
+
+/* INNER BULLET LIST */
+.space-list ul {
+    margin-top: 10px;
+    padding-left: 20px;
+
+    color: #e0e6ff;
+}
+
+/* LIST ITEM GLOW ACCENT */
+.space-list li {
+    margin: 5px 0;
+}
+
+/* OPTIONAL: subtle hover glow */
+.space-list li:hover {
+    color: #ff3b3b;
+    text-shadow:
+        0 0 5px rgba(255, 60, 60, 0.6),
+        0 0 10px rgba(0, 100, 255, 0.3);
+}
